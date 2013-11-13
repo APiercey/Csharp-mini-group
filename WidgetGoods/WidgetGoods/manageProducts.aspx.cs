@@ -16,6 +16,7 @@ namespace WidgetGoods
                 ddlProducts.Items.Add("-- Product List --");
                 ddlCategoryID.Items.Add("-- Categories --");
                 ddlSupplierID.Items.Add("-- Suppliers --");
+                //Another Test
             }
         }
 
