@@ -1,0 +1,42 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="WidgetGoods.master.cs" Inherits="WidgetGoods.WidgetGoods" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Widget General Goods</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link rel="stylesheet" href="main.css" type="text/css" />   
+</head>
+<body>
+    <form id="mainForm" runat="server">
+    <header>
+        <h1>Widget General Goods.com</h1>
+        <asp:LinkButton ID="lnkLogin" runat="server" OnClick="lnkLogin_Click">Logout</asp:LinkButton>
+    </header>
+
+    <aside id="sidebar" style="min-height: 160px;">
+		<section>
+			<div class="textwidget">
+                <ul>
+                    <li><asp:LinkButton ID="lnkCustomerSearch" runat="server" OnClick="lnkCustomerSearch_Click">Customer Search</asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkManageProducts" runat="server" OnClick="lnkManageProducts_Click">Manage Products</asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkManageCategories" runat="server" OnClick="lnkManageCategories_Click">Manage Categories</asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkManageSuppliers" runat="server" OnClick="lnkManageSuppliers_Click">Manage Suppliers</asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkManageEmployees" runat="server" OnClick="lnkManageEmployees_Click">Manage Employees</asp:LinkButton></li>
+                    <li><asp:LinkButton ID="lnkSalesReports" runat="server" OnClick="lnkSalesReports_Click">Sales Reports</asp:LinkButton></li>
+                </ul>                            
+			</div>
+		</section>		
+	</aside>
+    <div id="minDivWrapper">
+        <div id="mainDiv">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+            </asp:ContentPlaceHolder>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

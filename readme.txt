@@ -1,0 +1,1 @@
+This is the GitHub repo for our C# Mini Group poject for Web Project Management and Web Programming Languages I.
