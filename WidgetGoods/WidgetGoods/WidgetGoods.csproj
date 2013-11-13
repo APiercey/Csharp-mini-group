@@ -78,6 +78,7 @@
     <Compile Include="addOrder.aspx.designer.cs">
       <DependentUpon>addOrder.aspx</DependentUpon>
     </Compile>
+    <Compile Include="App_Code\Customer.cs" />
     <Compile Include="customerProfile.aspx.cs">
       <DependentUpon>customerProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
