@@ -166,7 +166,7 @@
                 <br />
 
                 <br />
-                <asp:Button ID="btnAddEmployee" runat="server" Text="Add New Employee" />
+                <asp:Button ID="btnAddEmployee" runat="server" Text="Add New Employee" OnClick="btnAddEmployee_Click" />
             </article>
         </section>
 
