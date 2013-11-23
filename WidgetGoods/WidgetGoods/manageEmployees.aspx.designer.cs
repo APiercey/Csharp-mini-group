@@ -13,13 +13,13 @@ namespace WidgetGoods {
     public partial class manageEmployees {
         
         /// <summary>
-        /// pnlEditEmployee control.
+        /// pnlViewEmployees control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEditEmployee;
+        protected global::System.Web.UI.WebControls.Panel pnlViewEmployees;
         
         /// <summary>
         /// btnShowAddEmployee control.
@@ -58,6 +58,15 @@ namespace WidgetGoods {
         protected global::System.Web.UI.WebControls.Panel pnlAddEmployee;
         
         /// <summary>
+        /// litHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litHeader;
+        
+        /// <summary>
         /// btnShowEditEmployee control.
         /// </summary>
         /// <remarks>
@@ -65,24 +74,6 @@ namespace WidgetGoods {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnShowEditEmployee;
-        
-        /// <summary>
-        /// lblSecureID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSecureID;
-        
-        /// <summary>
-        /// txtSecureID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecureID;
         
         /// <summary>
         /// lblFirstName control.
@@ -434,5 +425,14 @@ namespace WidgetGoods {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAddEmployee;
+        
+        /// <summary>
+        /// btnEditEmployee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditEmployee;
     }
 }

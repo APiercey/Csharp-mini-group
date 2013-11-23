@@ -4,7 +4,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <asp:Panel ID="pnlEditEmployee" runat="server">
+    <asp:Panel ID="pnlViewEmployees" runat="server">
         <h3>Manage Employees</h3>
 
         <asp:Button ID="btnShowAddEmployee" runat="server" Text="Add An Employee" OnClick="btnShowAddEmployee_Click" />
@@ -20,8 +20,10 @@
             <asp:BoundField DataField="Title" HeaderText="Title"/>
             <asp:BoundField DataField="HomePhone" HeaderText="Home Phone"/>
             <asp:BoundField DataField="Extension" HeaderText="Extension"/>
-                      
-            <asp:CommandField ShowEditButton="True" />
+            <asp:HyperLinkField DataNavigateUrlFields="EmployeeID" 
+                                DataNavigateUrlFormatString="manageEmployees.aspx?id={0}&action=edit" 
+                                HeaderText="EmployeeID" 
+                                Text="Edit"/>
         </Columns>
         </asp:GridView>
 
@@ -33,7 +35,7 @@
     </asp:Panel>
         
     <asp:Panel ID="pnlAddEmployee" runat="server" Visible="False">
-        <h3>Add An Employee</h3>
+        <h3><asp:Literal ID="litHeader" runat="server" /></h3>
 
         <asp:Button ID="btnShowEditEmployee" runat="server" Text="Display Employees To Edit" OnClick="btnShowEditEmployee_Click" />
         <br />
@@ -41,12 +43,6 @@
 
         <section>
             <article>
-                <asp:Label ID="lblSecureID" runat="server" Text="Secure ID"></asp:Label>
-                <br />
-                <asp:TextBox ID="txtSecureID" runat="server"></asp:TextBox>
-                <br />
-                <br />
-
                 <asp:Label ID="lblFirstName" runat="server" Text="First Name"></asp:Label>
                 <br />
                 <asp:TextBox ID="txtFirstName" runat="server"></asp:TextBox>
@@ -167,6 +163,7 @@
 
                 <br />
                 <asp:Button ID="btnAddEmployee" runat="server" Text="Add New Employee" OnClick="btnAddEmployee_Click" />
+                <asp:Button ID="btnEditEmployee" runat="server" OnClick="btnEditEmployee_Click" Text="Edit Employee" />
             </article>
         </section>
 
