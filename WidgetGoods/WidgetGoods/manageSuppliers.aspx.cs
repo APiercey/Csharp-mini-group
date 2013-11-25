@@ -110,13 +110,40 @@ namespace WidgetGoods
                 {
                     con.Close();
                 }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
             }
         }
 
         protected void btnAddSupplier_Click(object sender, EventArgs e)
         {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    
+                    //create an update command and add the parameter values
+                    string sql = "INSERT INTO Suppliers (CompanyName, ContactName) VALUES (@CompanyName, @ContactName)";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
+                    cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
 
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
+            }
         }
-
     }
 }
