@@ -57,6 +57,7 @@ namespace WidgetGoods
                         //to the parameters in the select statement
                         string sql = "SELECT * FROM Suppliers WHERE SupplierID = @SupplierID";
                         SqlCommand command = new SqlCommand(sql, con);
+                        command.Parameters.AddWithValue("@SupplierID", ddlSuppliers.SelectedValue);
 
                         DataTable supplierDataTable = new DataTable();
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -86,7 +87,30 @@ namespace WidgetGoods
 
         protected void btnUpdateSupplier_Click(object sender, EventArgs e)
         {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
 
+                    //create an update command and add the parameter values
+                    string sql = "UPDATE Suppliers SET CompanyName = @CompanyName, ContactName = @CompanyName WHERE SupplierID = @SupplierID";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
+                    cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
+                    cmd.Parameters.AddWithValue("@SupplierID", lblSupplierID.Text);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
         }
 
         protected void btnAddSupplier_Click(object sender, EventArgs e)
