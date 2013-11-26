@@ -44,7 +44,7 @@ namespace WidgetGoods
                     ddlCategoryID.Items.Add("-- Categories --");
                     ddlSupplierID.Items.Add("-- Suppliers --");
                 }
-            }_
+            }
         }//end Page_Load
 
         protected void btnUpdateProduct_Click(object sender, EventArgs e)
