@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -76,7 +77,7 @@ namespace WidgetGoods
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         adapter.Fill(productDataTable);
 
-                        //grabs all suppliers, defaults to top of list, not the actual supplier, trying to figure that out
+                        //grabs all suppliers  to populate the dropdown list
                         sql = "SELECT SupplierID, CompanyName FROM Suppliers ORDER BY CompanyName";
                         adapter = new SqlDataAdapter(sql, con);
                         DataTable supplierDataTable = new DataTable();
@@ -87,7 +88,7 @@ namespace WidgetGoods
                         ddlSupplierID.DataValueField = "SupplierID";
                         ddlSupplierID.DataBind();
 
-                        //grabs all categories, defaults to top of list, not the actual supplier, trying to figure that out
+                        //grabs all categories to populate the dropdown list
                         sql = "SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName";
                         adapter = new SqlDataAdapter(sql, con);
                         DataTable categoryDataTable = new DataTable();
@@ -106,9 +107,14 @@ namespace WidgetGoods
                         txtUnitsInStock.Text = productDataTable.Rows[0]["UnitsInStock"].ToString();
                         txtUnitsOnOrder.Text = productDataTable.Rows[0]["UnitsOnOrder"].ToString();
                         txtReorderLevel.Text = productDataTable.Rows[0]["ReorderLevel"].ToString();
-                        //display the actual catergory of product
-                        //display the actual supplier of product
-                        //display checkbox status
+
+                        //gets the category and supplier of the currently selected item 
+                        DataRow[] foundRow;
+                        foundRow = categoryDataTable.Select("CategoryID + '' LIKE '" + productDataTable.Rows[0]["CategoryID"] + "'");
+                        ddlCategoryID.SelectedValue = foundRow[0]["CategoryID"].ToString();
+
+                        foundRow = supplierDataTable.Select("SupplierID + '' LIKE '" + productDataTable.Rows[0]["SupplierID"] + "'");
+                        ddlSupplierID.SelectedValue = foundRow[0]["SupplierID"].ToString();
                     }
                     catch (Exception Ex)
                     {
