@@ -157,7 +157,7 @@
 
                 <asp:Label ID="lblCommission" runat="server" Text="Commission"></asp:Label>
                 <br />
-                <asp:TextBox ID="txtCommission" runat="server"></asp:TextBox>
+                <asp:TextBox ID="txtComm" ReadOnly="false" runat="server"></asp:TextBox>
                 <br />
                 <br />
 
