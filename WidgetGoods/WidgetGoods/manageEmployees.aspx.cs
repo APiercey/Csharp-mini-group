@@ -20,6 +20,7 @@ namespace WidgetGoods
                 {
                     if (Request.QueryString["action"].ToString() == "edit")
                     {
+                        //hey josh
                         displayEditEmployee(Convert.ToInt32(Request.QueryString["id"]));
                     }
                 }
