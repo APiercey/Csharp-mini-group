@@ -7,7 +7,7 @@
 
     <asp:Label ID="lblProducts" runat="server" Text="Product List"></asp:Label>
     <br />
-    <asp:DropDownList ID="ddlProducts" runat="server" ></asp:DropDownList>
+    <asp:DropDownList ID="ddlProducts" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlProducts_SelectedIndexChanged" ></asp:DropDownList>
     <br />
     <br />
 
