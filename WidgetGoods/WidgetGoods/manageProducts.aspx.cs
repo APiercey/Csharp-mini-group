@@ -48,16 +48,6 @@ namespace WidgetGoods
             }
         }//end Page_Load
 
-        protected void btnUpdateProduct_Click(object sender, EventArgs e)
-        {
-
-        }//end btnUpdateProduct_Click
-
-        protected void btnAddProduct_Click(object sender, EventArgs e)
-        {
-
-        }//end btnAddProduct_Click
-
         protected void ddlProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
             //check if the selected index is the default selection
@@ -144,5 +134,61 @@ namespace WidgetGoods
                 ckbDiscontinued.Checked = false;
             }
         }//end ddlProducts_SelectedIndexChanged
+
+        protected void btnUpdateProduct_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+
+                    //create an update command and add the parameter values
+                    string sql = "UPDATE Products SET " +
+                    "ProductName = @ProductName, " +
+                    "SupplierID = @SupplierID, " +
+                    "CategoryID = @CategoryID, " +
+                    "QuantityPerUnit = @Quanity, " +
+                    "UnitPrice = @Price, " +
+                    "UnitsInStock = @Stock, " +
+                    "UnitsOnOrder = @Order, " +
+                    "ReorderLevel = @Level, " +
+                    "Discontinued = @Checked, " + 
+                    "WHERE ProductID = @ProductID";
+
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@ProductName", txtProductName.Text);
+                    cmd.Parameters.AddWithValue("@SupplierID", ddlSupplierID.SelectedValue);
+                    cmd.Parameters.AddWithValue("CategoryID", ddlCategoryID.SelectedValue);
+                    cmd.Parameters.AddWithValue("Quantity", txtQuantityPerUnit.Text);
+                    cmd.Parameters.AddWithValue("Price", txtUnitPrice.Text);
+                    cmd.Parameters.AddWithValue("Stock", txtUnitsInStock.Text);
+                    cmd.Parameters.AddWithValue("Order", txtUnitsOnOrder.Text);
+                    cmd.Parameters.AddWithValue("Level", txtReorderLevel.Text);
+                    cmd.Parameters.AddWithValue("Checked", ckbDiscontinued.Checked.ToString());
+                    cmd.Parameters.AddWithValue("@ProductID", lblProductID.Text);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
+            }
+        }//end btnUpdateProduct_Click
+
+        protected void btnAddProduct_Click(object sender, EventArgs e)
+        {
+
+        }//end btnAddProduct_Click
+
+
     }//end partial class manageProducts
 }//end namespace WidgetGoods
