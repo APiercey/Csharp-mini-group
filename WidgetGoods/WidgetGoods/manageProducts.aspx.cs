@@ -115,6 +115,12 @@ namespace WidgetGoods
 
                         foundRow = supplierDataTable.Select("SupplierID + '' LIKE '" + productDataTable.Rows[0]["SupplierID"] + "'");
                         ddlSupplierID.SelectedValue = foundRow[0]["SupplierID"].ToString();
+
+                        //is the product discontiuned?
+                        if (productDataTable.Rows[0]["Discontinued"].ToString() == "True")
+                        {
+                            ckbDiscontinued.Checked = true;
+                        }
                     }
                     catch (Exception Ex)
                     {
