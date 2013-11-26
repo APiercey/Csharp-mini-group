@@ -23,6 +23,7 @@ namespace WidgetGoods
                 {
                     try
                     {
+                        //grabs all products to populate the dropdown list
                         string sql = "SELECT ProductID, ProductName FROM Products ORDER BY ProductName";
                         SqlDataAdapter adapter = new SqlDataAdapter(sql, con);
                         DataTable dataTable = new DataTable();
@@ -32,18 +33,36 @@ namespace WidgetGoods
                         ddlProducts.DataTextField = "ProductName";
                         ddlProducts.DataValueField = "ProductID";
                         ddlProducts.DataBind();
-
-                        //Adds a default value to the drop down list with a value of 0
-                        //at the 0 index of the drop down list (the top of the list)
                         ddlProducts.Items.Insert(0, new ListItem("-- Products List --", "0"));
+
+                        //grabs all suppliers to populate the dropdown list
+                        sql = "SELECT SupplierID, CompanyName FROM Suppliers ORDER BY CompanyName";
+                        adapter = new SqlDataAdapter(sql, con);
+                        DataTable supplierDataTable = new DataTable();
+                        adapter.Fill(supplierDataTable);
+
+                        ddlSupplierID.DataSource = supplierDataTable;
+                        ddlSupplierID.DataTextField = "CompanyName";
+                        ddlSupplierID.DataValueField = "SupplierID";
+                        ddlSupplierID.DataBind();
+                        ddlSupplierID.Items.Insert(0, new ListItem("-- Suppliers--", "0"));
+
+                        //grabs all categories to populate the dropdown list
+                        sql = "SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName";
+                        adapter = new SqlDataAdapter(sql, con);
+                        DataTable categoryDataTable = new DataTable();
+                        adapter.Fill(categoryDataTable);
+
+                        ddlCategoryID.DataSource = categoryDataTable;
+                        ddlCategoryID.DataTextField = "CategoryName";
+                        ddlCategoryID.DataValueField = "CategoryID";
+                        ddlCategoryID.DataBind();
+                        ddlCategoryID.Items.Insert(0, new ListItem("-- Categories  --", "0"));
                     }
                     catch (Exception Ex)
                     {
                         Response.Write("Exception occurred: " + Ex.Message);
                     }
-
-                    ddlCategoryID.Items.Add("-- Categories --");
-                    ddlSupplierID.Items.Add("-- Suppliers --");
                 }
             }
         }//end Page_Load
@@ -67,28 +86,6 @@ namespace WidgetGoods
                         SqlDataAdapter adapter = new SqlDataAdapter(command);
                         adapter.Fill(productDataTable);
 
-                        //grabs all suppliers  to populate the dropdown list
-                        sql = "SELECT SupplierID, CompanyName FROM Suppliers ORDER BY CompanyName";
-                        adapter = new SqlDataAdapter(sql, con);
-                        DataTable supplierDataTable = new DataTable();
-                        adapter.Fill(supplierDataTable);
-
-                        ddlSupplierID.DataSource = supplierDataTable;
-                        ddlSupplierID.DataTextField = "CompanyName";
-                        ddlSupplierID.DataValueField = "SupplierID";
-                        ddlSupplierID.DataBind();
-
-                        //grabs all categories to populate the dropdown list
-                        sql = "SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName";
-                        adapter = new SqlDataAdapter(sql, con);
-                        DataTable categoryDataTable = new DataTable();
-                        adapter.Fill(categoryDataTable);
-
-                        ddlCategoryID.DataSource = categoryDataTable;
-                        ddlCategoryID.DataTextField = "CategoryName";
-                        ddlCategoryID.DataValueField = "CategoryID";
-                        ddlCategoryID.DataBind();
-
                         //uses the DataTable results to populate the form fields with the results
                         lblProductID.Text = productDataTable.Rows[0]["ProductID"].ToString();
                         txtProductName.Text = productDataTable.Rows[0]["ProductName"].ToString();
@@ -99,6 +96,16 @@ namespace WidgetGoods
                         txtReorderLevel.Text = productDataTable.Rows[0]["ReorderLevel"].ToString();
 
                         //gets the category and supplier of the currently selected item 
+                        sql = "SELECT CategoryID, CategoryName FROM Categories ORDER BY CategoryName";
+                        adapter = new SqlDataAdapter(sql, con);
+                        DataTable categoryDataTable = new DataTable();
+                        adapter.Fill(categoryDataTable);
+
+                        sql = "SELECT SupplierID, CompanyName FROM Suppliers ORDER BY CompanyName";
+                        adapter = new SqlDataAdapter(sql, con);
+                        DataTable supplierDataTable = new DataTable();
+                        adapter.Fill(supplierDataTable);
+
                         DataRow[] foundRow;
                         foundRow = categoryDataTable.Select("CategoryID + '' LIKE '" + productDataTable.Rows[0]["CategoryID"] + "'");
                         ddlCategoryID.SelectedValue = foundRow[0]["CategoryID"].ToString();
@@ -126,10 +133,10 @@ namespace WidgetGoods
                 ddlSupplierID.SelectedIndex = 0;
                 lblProductID.Text = "";
                 txtProductName.Text = "";
-                txtQuantityPerUnit.Text = ""; 
-                txtUnitPrice.Text = ""; 
-                txtUnitsInStock.Text = ""; 
-                txtUnitsOnOrder.Text = ""; 
+                txtQuantityPerUnit.Text = "";
+                txtUnitPrice.Text = "";
+                txtUnitsInStock.Text = "";
+                txtUnitsOnOrder.Text = "";
                 txtReorderLevel.Text = "";
                 ckbDiscontinued.Checked = false;
             }
@@ -153,19 +160,19 @@ namespace WidgetGoods
                     "UnitsInStock = @Stock, " +
                     "UnitsOnOrder = @Order, " +
                     "ReorderLevel = @Level, " +
-                    "Discontinued = @Checked " + 
+                    "Discontinued = @Checked " +
                     "WHERE ProductID = @ProductID";
 
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@ProductName", txtProductName.Text);
                     cmd.Parameters.AddWithValue("@SupplierID", ddlSupplierID.SelectedValue);
-                    cmd.Parameters.AddWithValue("CategoryID", ddlCategoryID.SelectedValue);
-                    cmd.Parameters.AddWithValue("Quantity", txtQuantityPerUnit.Text);
-                    cmd.Parameters.AddWithValue("Price", txtUnitPrice.Text);
-                    cmd.Parameters.AddWithValue("Stock", txtUnitsInStock.Text);
-                    cmd.Parameters.AddWithValue("Order", txtUnitsOnOrder.Text);
-                    cmd.Parameters.AddWithValue("Level", txtReorderLevel.Text);
-                    cmd.Parameters.AddWithValue("Checked", ckbDiscontinued.Checked.ToString());
+                    cmd.Parameters.AddWithValue("@CategoryID", ddlCategoryID.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Quantity", txtQuantityPerUnit.Text);
+                    cmd.Parameters.AddWithValue("@Price", txtUnitPrice.Text);
+                    cmd.Parameters.AddWithValue("@Stock", txtUnitsInStock.Text);
+                    cmd.Parameters.AddWithValue("@Order", txtUnitsOnOrder.Text);
+                    cmd.Parameters.AddWithValue("@Level", txtReorderLevel.Text);
+                    cmd.Parameters.AddWithValue("@Checked", ckbDiscontinued.Checked.ToString());
                     cmd.Parameters.AddWithValue("@ProductID", lblProductID.Text);
 
                     cmd.ExecuteNonQuery();
@@ -186,9 +193,43 @@ namespace WidgetGoods
 
         protected void btnAddProduct_Click(object sender, EventArgs e)
         {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
 
+                    //create an update command and add the parameter values
+                    string sql = "INSERT INTO Products " +
+                    "(ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued) " +
+                    "VALUES " +
+                    "(@ProductName, @SupplierID, @CategoryID, @Quantity, @Price, @Stock, @Order, @Level, @Checked)";
+
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@ProductName", txtProductName.Text);
+                    cmd.Parameters.AddWithValue("@SupplierID", ddlSupplierID.SelectedValue);
+                    cmd.Parameters.AddWithValue("@CategoryID", ddlCategoryID.SelectedValue);
+                    cmd.Parameters.AddWithValue("@Quantity", txtQuantityPerUnit.Text);
+                    cmd.Parameters.AddWithValue("@Price", txtUnitPrice.Text);
+                    cmd.Parameters.AddWithValue("@Stock", txtUnitsInStock.Text);
+                    cmd.Parameters.AddWithValue("@Order", txtUnitsOnOrder.Text);
+                    cmd.Parameters.AddWithValue("@Level", txtReorderLevel.Text);
+                    cmd.Parameters.AddWithValue("@Checked", ckbDiscontinued.Checked.ToString());
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
+            }
         }//end btnAddProduct_Click
-
-
     }//end partial class manageProducts
 }//end namespace WidgetGoods
