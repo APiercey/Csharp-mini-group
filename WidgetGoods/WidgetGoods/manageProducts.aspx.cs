@@ -187,7 +187,7 @@ namespace WidgetGoods
                 }
 
                 //Redirects back to current page to refresh the list of categories
-                //Response.Redirect(Request.Url.ToString(), false);
+                Response.Redirect(Request.Url.ToString(), false);
             }
         }//end btnUpdateProduct_Click
 
