@@ -148,12 +148,12 @@ namespace WidgetGoods
                     "ProductName = @ProductName, " +
                     "SupplierID = @SupplierID, " +
                     "CategoryID = @CategoryID, " +
-                    "QuantityPerUnit = @Quanity, " +
+                    "QuantityPerUnit = @Quantity, " +
                     "UnitPrice = @Price, " +
                     "UnitsInStock = @Stock, " +
                     "UnitsOnOrder = @Order, " +
                     "ReorderLevel = @Level, " +
-                    "Discontinued = @Checked, " + 
+                    "Discontinued = @Checked " + 
                     "WHERE ProductID = @ProductID";
 
                     SqlCommand cmd = new SqlCommand(sql, con);
@@ -180,7 +180,7 @@ namespace WidgetGoods
                 }
 
                 //Redirects back to current page to refresh the list of categories
-                Response.Redirect(Request.Url.ToString(), false);
+                //Response.Redirect(Request.Url.ToString(), false);
             }
         }//end btnUpdateProduct_Click
 
