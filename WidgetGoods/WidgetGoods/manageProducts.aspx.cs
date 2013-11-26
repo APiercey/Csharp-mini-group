@@ -44,18 +44,18 @@ namespace WidgetGoods
                     ddlCategoryID.Items.Add("-- Categories --");
                     ddlSupplierID.Items.Add("-- Suppliers --");
                 }
-            }
-        }
+            }_
+        }//end Page_Load
 
         protected void btnUpdateProduct_Click(object sender, EventArgs e)
         {
 
-        }
+        }//end btnUpdateProduct_Click
 
         protected void btnAddProduct_Click(object sender, EventArgs e)
         {
 
-        }
+        }//end btnAddProduct_Click
 
         protected void ddlProducts_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -131,6 +131,6 @@ namespace WidgetGoods
                 txtReorderLevel.Text = "";
                 ckbDiscontinued.Checked = false;
             }
-        }
-    }
-}
+        }//end ddlProducts_SelectedIndexChanged
+    }//end partial class manageProducts
+}//end namespace WidgetGoods
