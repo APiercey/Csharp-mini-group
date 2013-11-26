@@ -12,17 +12,12 @@ namespace WidgetGoods
 {
     public partial class manageSuppliers : System.Web.UI.Page
     {
-        DataTable dataTable;
-        SqlDataAdapter dataAdapter;
+        string connectionString = WebConfigurationManager.ConnectionStrings["Northwind"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string connectionString = WebConfigurationManager.ConnectionStrings["Northwind"].ConnectionString;
-
             if (!IsPostBack)
             {
-                ddlSuppliers.Items.Add("-- Supplier List --");
-
                 using(SqlConnection con = new SqlConnection(connectionString))
                 {
                     try
@@ -36,6 +31,10 @@ namespace WidgetGoods
                         ddlSuppliers.DataTextField = "CompanyName";
                         ddlSuppliers.DataValueField = "SupplierID";
                         ddlSuppliers.DataBind();
+
+                        //Adds a default value to the drop down list with a value of 0
+                        //at the 0 index of the drop down list (the top of the list)
+                        ddlSuppliers.Items.Insert(0, new ListItem("-- Supplier List --", "0"));
                     }
                     catch (Exception Ex)
                     {
@@ -45,15 +44,106 @@ namespace WidgetGoods
             }
         }
 
+        protected void ddlSuppliers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //check if the selected index is the default selection
+            if (ddlSuppliers.SelectedIndex != 0)
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        //creates a command and adds the SupplierID from the drop down list
+                        //to the parameters in the select statement
+                        string sql = "SELECT * FROM Suppliers WHERE SupplierID = @SupplierID";
+                        SqlCommand command = new SqlCommand(sql, con);
+                        command.Parameters.AddWithValue("@SupplierID", ddlSuppliers.SelectedValue);
+
+                        DataTable supplierDataTable = new DataTable();
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        adapter.Fill(supplierDataTable);
+
+                        //uses the DataTable results to populate the form fields with the results
+                        lblSupplierID.Text = supplierDataTable.Rows[0]["SupplierID"].ToString();
+                        txtCompanyName.Text = supplierDataTable.Rows[0]["CompanyName"].ToString();
+                        txtContactName.Text = supplierDataTable.Rows[0]["ContactName"].ToString();
+                    }
+                    catch (Exception Ex)
+                    {
+                        Response.Write("System error: " + Ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                //resets the form value
+                ddlSuppliers.SelectedIndex = 0;
+
+                lblSupplierID.Text = "";
+                txtCompanyName.Text = "";
+                txtContactName.Text = "";
+            }
+        }
+
         protected void btnUpdateSupplier_Click(object sender, EventArgs e)
         {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
 
+                    //create an update command and add the parameter values
+                    string sql = "UPDATE Suppliers SET CompanyName = @CompanyName, ContactName = @CompanyName WHERE SupplierID = @SupplierID";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
+                    cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
+                    cmd.Parameters.AddWithValue("@SupplierID", lblSupplierID.Text);
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
+            }
         }
 
         protected void btnAddSupplier_Click(object sender, EventArgs e)
         {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    con.Open();
+                    
+                    //create an update command and add the parameter values
+                    string sql = "INSERT INTO Suppliers (CompanyName, ContactName) VALUES (@CompanyName, @ContactName)";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
+                    cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
 
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception Ex)
+                {
+                    Response.Write("System error: " + Ex.Message);
+                }
+                finally
+                {
+                    con.Close();
+                }
+
+                //Redirects back to current page to refresh the list of categories
+                Response.Redirect(Request.Url.ToString(), false);
+            }
         }
-
     }
 }
