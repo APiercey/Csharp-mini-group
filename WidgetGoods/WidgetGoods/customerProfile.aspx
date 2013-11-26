@@ -4,7 +4,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
     <h3>Customer Profile</h3>
-
+    <asp:HiddenField ID="hdnID" runat="server" />
     <section>
         <article>
             <asp:Label ID="lblCompanyName" runat="server" Text="Company Name"></asp:Label>
@@ -55,4 +55,42 @@
 
         </article>
     </section>
+    
+    <h3>&nbsp</h3> 
+    <h3>List of Orders</h3>
+
+    <asp:GridView ID="GridView1" runat="server" DataSourceID="salesReport"
+            AutoGenerateColumns="False" DataKeyNames="CustomerID" ShowFooter="True" OnRowDataBound="GridView1_RowDataBound" FooterStyle-BorderStyle="None">           
+        <Columns>
+            <asp:BoundField DataField="OrderID" HeaderText="ID" ReadOnly="True" />
+            <asp:BoundField DataField="FirstName" HeaderText="First Name"/>
+            <asp:BoundField DataField="LastName" HeaderText="Last Name"/>            
+            <asp:BoundField DataField="OrderDate" HeaderText="Order Date"/>
+            <asp:BoundField DataField="ProductName" HeaderText="Product Name"/>
+            <asp:BoundField DataField="CompanyName" HeaderText="Customer Name"/>
+            <asp:BoundField DataField="Quantity" HeaderText="Quantity"/>
+            <asp:BoundField DataField="OrderTotal" HeaderText="Order Total" />
+                               
+        </Columns>
+        <FooterStyle BackColor="#990000" BorderStyle="None" Font-Size="X-Large" ForeColor="White" BorderColor="#990000" Height="25px" Font-Bold="True" />
+        </asp:GridView>
+
+    <asp:SqlDataSource ID="salesReport" runat="server"
+            SelectCommand="SELECT c.CustomerID, o.OrderID, e.FirstName, e.LastName, o.OrderDate, p.ProductName, s.CompanyName, od.Quantity, CONVERT(DECIMAL(10,2), (od.Quantity * od.UnitPrice)) AS OrderTotal
+                            FROM Customers c JOIN Orders o
+                            ON c.CustomerID = o.CustomerID JOIN [Order Details] od
+                            ON od.OrderID = o.OrderID JOIN Products p
+                            ON p.ProductID = od.ProductID JOIN Suppliers s
+                            ON s.SupplierID = p.SupplierID JOIN Employees e
+                            ON e.EmployeeID = o.EmployeeID
+                            WHERE c.CustomerID =@CustomerID" 
+            ConnectionString="<%$ ConnectionStrings:Northwind %>">
+
+            <SelectParameters>
+                <asp:ControlParameter Name="CustomerID" 
+                    ControlID="hdnID"
+                    PropertyName="Value"/>
+            </SelectParameters>             
+
+        </asp:SqlDataSource>
 </asp:Content>

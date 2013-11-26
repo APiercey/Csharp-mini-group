@@ -13,6 +13,7 @@ namespace WidgetGoods
     {
         DataTable dataTableCategory = new DataTable();
         SqlDataAdapter adapter;
+        Decimal totalSales;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,6 +42,45 @@ namespace WidgetGoods
                         ex.ToString();
                     }
                 }
+            }
+        }
+
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                totalSales += Decimal.Parse(e.Row.Cells[5].Text);
+            }
+            else if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                Decimal commission;
+
+                using (SqlConnection db = new SqlConnection(WebConfigurationManager.ConnectionStrings["Northwind"].ConnectionString))
+                {
+                    try
+                    {
+                        db.Open();
+
+                        //Creates an update command and add the parameter values to the command
+                        SqlCommand command = new SqlCommand("SELECT Commission FROM Employees WHERE EmployeeID=@EmployeeID", db);
+                        command.Parameters.AddWithValue("@EmployeeID", ddlEmployeeList.SelectedValue);
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                commission = (Decimal)reader[0];
+                                totalSales = totalSales * (commission / 100);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                e.Row.Cells[4].Text = "Total Commision: ";
+                e.Row.Cells[5].Text = (totalSales).ToString();
             }
         }
     }

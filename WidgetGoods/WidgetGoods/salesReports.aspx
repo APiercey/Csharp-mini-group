@@ -26,7 +26,7 @@
     </section>
 
     <asp:GridView ID="GridView1" runat="server" DataSourceID="salesReport"
-            AutoGenerateColumns="False" DataKeyNames="EmployeeID" ShowFooter="True">           
+            AutoGenerateColumns="False" DataKeyNames="EmployeeID" ShowFooter="True" OnRowDataBound="GridView1_RowDataBound" FooterStyle-BorderStyle="None">           
         <Columns>
             <asp:BoundField DataField="EmployeeID" HeaderText="ID" ReadOnly="True" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name"/>
@@ -37,10 +37,11 @@
             <asp:BoundField DataField="CompanyName" HeaderText="Customer Name"/>
                                
         </Columns>
+        <FooterStyle BackColor="#990000" BorderStyle="None" Font-Size="X-Large" ForeColor="White" BorderColor="#990000" Height="25px" Font-Bold="True" />
         </asp:GridView>
 
     <asp:SqlDataSource ID="salesReport" runat="server"
-            SelectCommand="SELECT CONVERT(DECIMAL(10,2), (d.Quantity * d.UnitPrice)) AS OrderTotal, e.EmployeeID, e.FirstName, e.LastName, o.OrderID, d.Quantity, d.UnitPrice, o.OrderDate, c.ContactName, c.CompanyName 
+            SelectCommand="SELECT CONVERT(DECIMAL(10,2), (d.Quantity * d.UnitPrice)) AS OrderTotal, e.Commission, e.EmployeeID, e.FirstName, e.LastName, o.OrderID, d.Quantity, d.UnitPrice, o.OrderDate, c.ContactName, c.CompanyName 
                             FROM [Employees] e JOIN [Orders] o 
                             ON e.EmployeeID = o.EmployeeID JOIN [Order Details] d 
                             ON d.OrderID = o.OrderID JOIN [Customers] c 
