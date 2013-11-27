@@ -6,11 +6,13 @@ using System.Data.SqlClient;
 using System.Web.Configuration;
 using System.Data;
 using System.Web.UI.WebControls;
-
+// Hossein looked at the code. In process of modify the table to show total sales properly
 namespace WidgetGoods
 {
     public partial class salesReports : System.Web.UI.Page
     {
+        decimal totalSold = 0M;
+        decimal commissionRate = 0.10M;
         DataTable dataTableCategory = new DataTable();
         SqlDataAdapter adapter;
 
@@ -41,7 +43,28 @@ namespace WidgetGoods
                         ex.ToString();
                     }
                 }
+
             }
         }
-    }
+        protected void GridView1_RowDataBound(object Sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Label lblOrderTotal = (Label)e.Row.FindControl("lblOrderTotal");
+                decimal orderTotal = Decimal.Parse(lblOrderTotal.Text);
+                totalSold += orderTotal;
+
+            }
+            if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                Label lblTotalSold = (Label)e.Row.FindControl("lblTotalSold");
+                Label lblTotalCommission = (Label)e.Row.FindControl("lblTotalCommission");
+                lblTotalSold.Text = totalSold.ToString("C");
+                lblTotalCommission.Text = (totalSold * commissionRate).ToString("C");
+            }
+            
+        }
+        
+
+     }
 }

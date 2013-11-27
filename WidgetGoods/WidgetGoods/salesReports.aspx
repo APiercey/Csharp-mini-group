@@ -25,20 +25,44 @@
         </article>
     </section>
 
-    <asp:GridView ID="GridView1" runat="server" DataSourceID="salesReport"
-            AutoGenerateColumns="False" DataKeyNames="EmployeeID" ShowFooter="True">           
+    <asp:GridView ID="GridView1" runat="server" DataSourceID="salesReport" AutoGenerateColumns="False" DataKeyNames="EmployeeID" ShowFooter="True" BackColor="White" BorderColor="#CC9966" BorderStyle="None" BorderWidth="1px" CellPadding="4" OnRowDataBound="GridView1_RowDataBound">   
+        
         <Columns>
             <asp:BoundField DataField="EmployeeID" HeaderText="ID" ReadOnly="True" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name"/>
             <asp:BoundField DataField="LastName" HeaderText="Last Name"/>            
             <asp:BoundField DataField="OrderID" HeaderText="Order ID"/>
-            <asp:BoundField DataField="OrderDate" HeaderText="Order Date"/>
-            <asp:BoundField DataField="OrderTotal" HeaderText="Order Total"/>
-            <asp:BoundField DataField="CompanyName" HeaderText="Customer Name"/>
-                               
+            <asp:BoundField DataField="OrderDate" HeaderText="Order Date" FooterText="Total Sold:" />
+     <asp:TemplateField HeaderText="Order Total" >
+        <ItemTemplate>
+            <asp:Label ID="lblOrderTotal" runat="server" Text='<%# Eval("OrderTotal") %>' DataFormatString="{0:c}" />
+        </ItemTemplate>
+        <FooterTemplate>
+           <asp:Label ID="lblTotalSold" runat="server" />
+        </FooterTemplate>
+     </asp:TemplateField>
+           
+     <asp:TemplateField HeaderText="Customer Name" >
+         <ItemTemplate>
+            <asp:Label ID="lblCompanyName" runat="server" Text='<%# Eval("CompanyName") %>' />
+         </ItemTemplate>
+         <FooterTemplate><b>Total Commission: </b>
+            <asp:Label ID="lblTotalCommission" runat="server" Text="TotalCommission"/>
+         </FooterTemplate>
+            </asp:TemplateField>
         </Columns>
-        </asp:GridView>
 
+        <FooterStyle BackColor="#FFFFCC" ForeColor="#330099" />
+        <HeaderStyle BackColor="#990000" Font-Bold="True" ForeColor="#FFFFCC" />
+        <PagerStyle BackColor="#FFFFCC" ForeColor="#330099" HorizontalAlign="Center" />
+        <RowStyle BackColor="White" ForeColor="#330099" />
+        <SelectedRowStyle BackColor="#FFCC66" Font-Bold="True" ForeColor="#663399" />
+        <SortedAscendingCellStyle BackColor="#FEFCEB" />
+        <SortedAscendingHeaderStyle BackColor="#AF0101" />
+        <SortedDescendingCellStyle BackColor="#F6F0C0" />
+        <SortedDescendingHeaderStyle BackColor="#7E0000" />
+        </asp:GridView>
+    
     <asp:SqlDataSource ID="salesReport" runat="server"
             SelectCommand="SELECT CONVERT(DECIMAL(10,2), (d.Quantity * d.UnitPrice)) AS OrderTotal, e.EmployeeID, e.FirstName, e.LastName, o.OrderID, d.Quantity, d.UnitPrice, o.OrderDate, c.ContactName, c.CompanyName 
                             FROM [Employees] e JOIN [Orders] o 
