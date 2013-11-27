@@ -13,14 +13,18 @@ namespace WidgetGoods
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["id"] != null &&
-               Request.QueryString["action"] != null)
+            if (!IsPostBack)
             {
-                if (Request.QueryString["action"].ToString() == "edit")
+                if (Request.QueryString["id"] != null &&
+                    Request.QueryString["action"] != null)
                 {
-                    displayEditEmployee(Convert.ToInt32(Request.QueryString["id"]));
+                    if (Request.QueryString["action"].ToString() == "edit")
+                    {
+                        displayEditEmployee(Convert.ToInt32(Request.QueryString["id"]));
+                    }
                 }
             }
+            
         }
         protected void displayEditEmployee(int employeeID)
         {
@@ -58,7 +62,7 @@ namespace WidgetGoods
                         txtExtension.Text       = reader[13].ToString();
                         txtNotes.Text           = reader[15].ToString();
                         txtReportsTo.Text       = reader[16].ToString();
-                        txtCommission.Text      = reader[18].ToString();
+                        txtComm.Text            = reader[18].ToString();
                         txtEmail.Text           = reader[19].ToString();
                         txtPassword.Text        = reader[20].ToString();
                     }
@@ -82,8 +86,8 @@ namespace WidgetGoods
             txtFirstName.Text       = String.Empty;
             txtTitle.Text           = String.Empty;
             txtTitleOfCourtesy.Text = String.Empty;
-            txtBirthDate.Text       = String.Empty;
-            txtHireDate.Text        = String.Empty;
+            txtBirthDate.Text       = DateTime.Now.ToString();
+            txtHireDate.Text        = DateTime.Now.ToString();
             txtAddress.Text         = String.Empty;
             txtCity.Text            = String.Empty;
             txtRegion.Text          = String.Empty;
@@ -93,7 +97,7 @@ namespace WidgetGoods
             txtExtension.Text       = String.Empty;
             txtNotes.Text           = String.Empty;
             txtReportsTo.Text       = String.Empty;
-            txtCommission.Text      = String.Empty;
+            txtComm.Text            = String.Empty;
             txtEmail.Text           = String.Empty;
             txtPassword.Text        = String.Empty;
         }
@@ -150,7 +154,7 @@ namespace WidgetGoods
                     command.Parameters.AddWithValue("@Email",           txtEmail.Text);
                     command.Parameters.AddWithValue("@Admin",           "0");               //Normal user
                     command.Parameters.AddWithValue("@Password",        txtPassword.Text);
-                    command.Parameters.AddWithValue("@Commission",      txtCommission.Text);
+                    command.Parameters.AddWithValue("@Commission",      double.Parse(txtComm.Text));
 
                     command.ExecuteNonQuery();
 
@@ -187,8 +191,8 @@ namespace WidgetGoods
                     byte[] byteImage = new byte[imgLength];
 
                     fupPhoto.PostedFile.InputStream.Read(byteImage, 0, imgLength);
-
-                    command.Parameters.AddWithValue("@EmployeeID",      Request.QueryString["id"].ToString());
+                    
+                    command.Parameters.AddWithValue("@EmployeeID",      Convert.ToInt32(Request.QueryString["id"].ToString()));
                     command.Parameters.AddWithValue("@LastName",        txtLastName.Text);
                     command.Parameters.AddWithValue("@FirstName",       txtFirstName.Text);
                     command.Parameters.AddWithValue("@Title",           txtTitle.Text);
@@ -205,7 +209,7 @@ namespace WidgetGoods
                     command.Parameters.AddWithValue("@Photo",           byteImage);
                     command.Parameters.AddWithValue("@Email",           txtEmail.Text);
                     command.Parameters.AddWithValue("@Password",        txtPassword.Text);
-                    command.Parameters.AddWithValue("@Commission",      txtCommission.Text);
+                    command.Parameters.AddWithValue("@Commission",      double.Parse(txtComm.Text));
 
                     command.ExecuteNonQuery();
 

@@ -12,6 +12,7 @@ namespace WidgetGoods
     public partial class customerProfile : System.Web.UI.Page
     {
         Customer customer;
+        Decimal totalSales = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,6 +34,7 @@ namespace WidgetGoods
                 txtCity.Text = customer.getPropertyValue("City");
                 txtPhone.Text = customer.getPropertyValue("Phone");
                 txtFax.Text = customer.getPropertyValue("Fax");
+                hdnID.Value = customer.getPropertyValue("CustomerID");
             }
         }
 
@@ -85,6 +87,20 @@ namespace WidgetGoods
         protected void btnAddNewOrder_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/addOrder.aspx");
+        }
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                totalSales += Decimal.Parse(e.Row.Cells[7].Text);
+            }
+            else if (e.Row.RowType == DataControlRowType.Footer)
+            {
+                //test
+                e.Row.Cells[6].Text = "Total Sales: ";
+                e.Row.Cells[7].Text = (totalSales).ToString();
+            }
+
         }
     }
 }
