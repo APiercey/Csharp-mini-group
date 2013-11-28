@@ -22,7 +22,14 @@
                 <asp:CommandField ShowSelectButton="True" />
             </Columns>
         </asp:GridView>
-
+        <asp:SqlDataSource ID="employeeListData" runat="server"
+            SelectCommand="SELECT EmployeeID, FirstName + ' ' + LastName AS FullName FROM Employees"
+            ConnectionString="<%$ ConnectionStrings:Northwind %>" >
+        </asp:SqlDataSource>
+        <asp:SqlDataSource ID="shipperListData" runat="server"
+            SelectCommand="SELECT CompanyName, ShipperID FROM Shippers"
+            ConnectionString="<%$ ConnectionStrings:Northwind %>" >
+        </asp:SqlDataSource>
         <asp:SqlDataSource id="productSearchData" runat="server" 
             SelectCommand="SELECT [Products].ProductID, [Products].ProductName, [Suppliers].CompanyName, [Categories].CategoryName 
                             FROM Products, Suppliers, Categories 
@@ -56,7 +63,10 @@
 
         <asp:Label ID="lblEmployeeName" runat="server" Text="Employee Name"></asp:Label>
         <br />
-        <asp:DropDownList ID="ddlEmployeeName" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="ddlEmployeeName" runat="server"
+             DataSourceID="employeeListData"
+             DataTextField="FullName"
+             DataValueField="EmployeeID"></asp:DropDownList>
         <br />
         <br />
 
@@ -70,7 +80,10 @@
 
                 <asp:Label ID="lblShippingCompany" runat="server" Text="Shipping Company"></asp:Label>
                 <br />
-                <asp:DropDownList ID="ddlShippingCompany" runat="server"></asp:DropDownList>
+                <asp:DropDownList ID="ddlShippingCompany" runat="server"
+                    DataSourceID="shipperListData"
+                    DataTextField="CompanyName"
+                    DataValueField="ShipperID"></asp:DropDownList>
                 <br />
                 <br />
 

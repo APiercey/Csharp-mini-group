@@ -62,6 +62,7 @@ namespace WidgetGoods
             {
                 try 
                 {
+                    db.Open();
                     String query = @"INSERT INTO Orders (CustomerID,   EmployeeID,  OrderDate, 
                                                          RequiredDate, ShipVia,
                                                          Freight,      ShipName,    ShipAddress, 
@@ -76,23 +77,24 @@ namespace WidgetGoods
 
                     SqlCommand command = new SqlCommand(query,db);
 
-                    command.Parameters.AddWithValue("EmployeeID", user.getPropertyValue("EmployeeID").ToString());
-                    command.Parameters.AddWithValue("CustomerID", customer.getPropertyValue("CustomerID").ToString());
-                    command.Parameters.AddWithValue("OrderDate", cldOrderDate.SelectedDate.ToString());
-                    command.Parameters.AddWithValue("RequiredDate", cldRequiredDate.SelectedDate.ToString());
-                    command.Parameters.AddWithValue("ShipVia", Convert.ToInt32(ddlShippingCompany.ToString()));
-                    command.Parameters.AddWithValue("Freight", txtFreight.Text);
-                    command.Parameters.AddWithValue("ShipName", txtShipName.Text);
-                    command.Parameters.AddWithValue("ShipAddress", txtShipAddress.Text);
-                    command.Parameters.AddWithValue("ShipCity", txtShipCity.Text);
-                    command.Parameters.AddWithValue("ShipRegion", txtShipRegion.Text);
-                    command.Parameters.AddWithValue("ShipPostalCode", txtShipPostalCode.Text);
-                    command.Parameters.AddWithValue("ShipCountry", txtShipCountry.Text);
+                    command.Parameters.AddWithValue("@EmployeeID", Convert.ToInt32(ddlEmployeeName.SelectedValue.ToString()));
+                    command.Parameters.AddWithValue("@CustomerID", customer.getPropertyValue("CustomerID").ToString());
+                    command.Parameters.AddWithValue("@OrderDate", cldOrderDate.SelectedDate.ToString());
+                    command.Parameters.AddWithValue("@RequiredDate", cldRequiredDate.SelectedDate.ToString());
+                    command.Parameters.AddWithValue("@ShipVia", Convert.ToInt32(ddlShippingCompany.SelectedValue.ToString()));
+                    command.Parameters.AddWithValue("@Freight", decimal.Parse(txtFreight.Text));
+                    command.Parameters.AddWithValue("@ShipName", txtShipName.Text);
+                    command.Parameters.AddWithValue("@ShipAddress", txtShipAddress.Text);
+                    command.Parameters.AddWithValue("@ShipCity", txtShipCity.Text);
+                    command.Parameters.AddWithValue("@ShipRegion", txtShipRegion.Text);
+                    command.Parameters.AddWithValue("@ShipPostalCode", txtShipPostalCode.Text);
+                    command.Parameters.AddWithValue("@ShipCountry", txtShipCountry.Text);
 
                     for(int i = 0; i < Convert.ToInt32(ddlQuantity.SelectedValue.ToString()); i++)
                     {
                         command.ExecuteNonQuery();
                     }
+
 
                 }
                 catch (Exception exc) 
@@ -101,7 +103,7 @@ namespace WidgetGoods
                 }
                 finally 
                 {
-                    
+                    db.Close();
                 }
             }
         }
