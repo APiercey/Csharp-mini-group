@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Web.Configuration;
 
 namespace WidgetGoods
 {
@@ -21,6 +23,7 @@ namespace WidgetGoods
             else
             {
                 customer = (Customer)Session["customer"];
+                user = (User)Session["user"];
             }
 
             if (!IsPostBack)
@@ -55,7 +58,52 @@ namespace WidgetGoods
 
         protected void btnAddNewOrder_Click(object sender, EventArgs e)
         {
+            using (SqlConnection db = new SqlConnection(WebConfigurationManager.ConnectionStrings["Northwind"].ConnectionString))
+            {
+                try 
+                {
+                    String query = @"INSERT INTO Orders (CustomerID,   EmployeeID,  OrderDate, 
+                                                         RequiredDate, ShipVia,
+                                                         Freight,      ShipName,    ShipAddress, 
+                                                         ShipCity,     ShipRegion,  ShipPostalCode, 
+                                                         ShipCountry)
 
+                                                 VALUES (@CustomerID,   @EmployeeID,  @OrderDate, 
+                                                         @RequiredDate, @ShipVia,
+                                                         @Freight,      @ShipName,    @ShipAddress, 
+                                                         @ShipCity,     @ShipRegion,  @ShipPostalCode, 
+                                                         @ShipCountry)";
+
+                    SqlCommand command = new SqlCommand(query,db);
+
+                    command.Parameters.AddWithValue("EmployeeID", user.getPropertyValue("EmployeeID").ToString());
+                    command.Parameters.AddWithValue("CustomerID", customer.getPropertyValue("CustomerID").ToString());
+                    command.Parameters.AddWithValue("OrderDate", cldOrderDate.SelectedDate.ToString());
+                    command.Parameters.AddWithValue("RequiredDate", cldRequiredDate.SelectedDate.ToString());
+                    command.Parameters.AddWithValue("ShipVia", Convert.ToInt32(ddlShippingCompany.ToString()));
+                    command.Parameters.AddWithValue("Freight", txtFreight.Text);
+                    command.Parameters.AddWithValue("ShipName", txtShipName.Text);
+                    command.Parameters.AddWithValue("ShipAddress", txtShipAddress.Text);
+                    command.Parameters.AddWithValue("ShipCity", txtShipCity.Text);
+                    command.Parameters.AddWithValue("ShipRegion", txtShipRegion.Text);
+                    command.Parameters.AddWithValue("ShipPostalCode", txtShipPostalCode.Text);
+                    command.Parameters.AddWithValue("ShipCountry", txtShipCountry.Text);
+
+                    for(int i = 0; i < Convert.ToInt32(ddlQuantity.SelectedValue.ToString()); i++)
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                }
+                catch (Exception exc) 
+                {
+                    lblCustomerName.Text = exc.Message;
+                }
+                finally 
+                {
+                    
+                }
+            }
         }
     }
 }
