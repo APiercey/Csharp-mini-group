@@ -60,7 +60,7 @@
     <h3>List of Orders</h3>
 
     <asp:GridView ID="GridView1" runat="server" DataSourceID="salesReport"
-            AutoGenerateColumns="False" DataKeyNames="CustomerID" ShowFooter="True" OnRowDataBound="GridView1_RowDataBound" FooterStyle-BorderStyle="None">           
+            AutoGenerateColumns="False" DataKeyNames="CustomerID" ShowFooter="True" OnRowDataBound="GridView1_RowDataBound" BackColor="White" BorderColor="#CC9966" BorderStyle="None" BorderWidth="1px" CellPadding="4">           
         <Columns>
             <asp:BoundField DataField="OrderID" HeaderText="ID" ReadOnly="True" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name"/>

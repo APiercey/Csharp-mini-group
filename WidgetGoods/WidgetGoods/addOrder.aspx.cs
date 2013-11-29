@@ -42,7 +42,7 @@ namespace WidgetGoods
             pnlAddOrder.Visible = true;
 
             lblCustomerName.Text = customer.getPropertyValue("CompanyName");
-
+            ddlEmployeeName.SelectedValue = user.getPropertyValue("EmployeeID");
 
             //These should come after the other items are added to the drop down list
             ddlEmployeeName.Items.Insert(0, new ListItem("-- Employee List --", "0"));
