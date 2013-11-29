@@ -26,6 +26,10 @@
                 <asp:BoundField DataField="City" HeaderText="City"/>
                 <asp:BoundField DataField="Phone" HeaderText="Phone"/>
                 <asp:BoundField DataField="Fax" HeaderText="Fax"/>
+                <asp:HyperLinkField DataNavigateUrlFields="CustomerID" 
+                                DataNavigateUrlFormatString="customerSearch.aspx?id={0}&action=delete" 
+                                HeaderText="Delete" 
+                                Text="Delete"/>
                       
                 <asp:CommandField ShowSelectButton="True" />
             </Columns>
@@ -33,7 +37,9 @@
 
         <asp:SqlDataSource id="customerSearchData" runat="server" 
             SelectCommand="SELECT * FROM Customers WHERE ContactName LIKE ('%' + @Search + '%') OR CompanyName LIKE ('%' + @Search + '%')" 
-            ConnectionString="<%$ ConnectionStrings:Northwind %>" >
+            ConnectionString="<%$ ConnectionStrings:Northwind %>" 
+            >
+            
             <SelectParameters>
 
             <asp:ControlParameter Name="Search" 
