@@ -15,7 +15,15 @@ namespace WidgetGoods
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if(!IsPostBack)
+            {
+                if (Request.QueryString["id"] != null &&
+                    Request.QueryString["action"] != null)
+                {
+                    deleteCustomerAndCascade(Request.QueryString["id"].ToString());
+                }
+            }
+            
         }
 
         protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
@@ -107,6 +115,54 @@ namespace WidgetGoods
         {
             pnlCustomerSearch.Visible = false;
             pnlAddNewCustomer.Visible = true;
+        }
+        protected void deleteCustomerAndCascade(String customerID)
+        {
+            using (SqlConnection db = new SqlConnection(WebConfigurationManager.ConnectionStrings["Northwind"].ConnectionString))
+            {
+                try
+                {
+                    db.Open();
+
+                    String query = "SELECT OrderID FROM Orders WHERE CustomerID = @customerID";
+                    SqlCommand command = new SqlCommand(query, db);
+                    command.Parameters.AddWithValue("@customerID", customerID);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        String deleteQuery = "DELETE FROM [Order Details] WHERE OrderID = @orderID";
+
+                        SqlCommand deleteCommand = new SqlCommand(deleteQuery, db);
+                        deleteCommand.Parameters.AddWithValue("@orderID", reader[0]);
+
+                        deleteCommand.ExecuteNonQuery();
+                    }
+
+                    command = new SqlCommand("DELETE FROM Orders WHERE CustomerID = @customerID", db);
+                    command.Parameters.AddWithValue("@customerID", customerID);
+
+                    command.ExecuteNonQuery();
+
+                    command = new SqlCommand("DELETE FROM Customers WHERE CustomerID = @customerID", db);
+                    command.Parameters.AddWithValue("@customerID", customerID);
+
+                    command.ExecuteNonQuery();
+
+
+
+
+                }
+                catch(Exception exc)
+                {
+
+                }
+                finally
+                {
+
+                }
+            }
         }
     }
 }

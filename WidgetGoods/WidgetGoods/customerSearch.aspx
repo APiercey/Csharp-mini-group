@@ -28,7 +28,7 @@
                 <asp:BoundField DataField="Fax" HeaderText="Fax"/>
                 <asp:HyperLinkField DataNavigateUrlFields="CustomerID" 
                                 DataNavigateUrlFormatString="customerSearch.aspx?id={0}&action=delete" 
-                                HeaderText="Delete" 
+                                HeaderText="Delete"
                                 Text="Delete"/>
                       
                 <asp:CommandField ShowSelectButton="True" />
