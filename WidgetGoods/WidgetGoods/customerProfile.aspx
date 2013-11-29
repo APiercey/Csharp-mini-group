@@ -72,7 +72,17 @@
             <asp:BoundField DataField="OrderTotal" HeaderText="Order Total" />
                                
         </Columns>
+        
         <FooterStyle BackColor="#990000" BorderStyle="None" Font-Size="X-Large" ForeColor="White" BorderColor="#990000" Height="25px" Font-Bold="True" />
+        <FooterStyle BackColor="#FFFFCC" ForeColor="#330099" />
+        <HeaderStyle BackColor="#990000" Font-Bold="True" ForeColor="#FFFFCC" />
+        <PagerStyle BackColor="#FFFFCC" ForeColor="#330099" HorizontalAlign="Center" />
+        <RowStyle BackColor="White" ForeColor="#330099" />
+        <SelectedRowStyle BackColor="#FFCC66" Font-Bold="True" ForeColor="#663399" />
+        <SortedAscendingCellStyle BackColor="#FEFCEB" />
+        <SortedAscendingHeaderStyle BackColor="#AF0101" />
+        <SortedDescendingCellStyle BackColor="#F6F0C0" />
+        <SortedDescendingHeaderStyle BackColor="#7E0000" />
         </asp:GridView>
 
     <asp:SqlDataSource ID="salesReport" runat="server"
