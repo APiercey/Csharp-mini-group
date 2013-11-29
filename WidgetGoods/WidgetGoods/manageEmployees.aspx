@@ -24,6 +24,10 @@
                                 DataNavigateUrlFormatString="manageEmployees.aspx?id={0}&action=edit" 
                                 HeaderText="EmployeeID" 
                                 Text="Edit"/>
+            <asp:HyperLinkField DataNavigateUrlFields="EmployeeID" 
+                                DataNavigateUrlFormatString="manageEmployees.aspx?id={0}&action=delete" 
+                                HeaderText="Delete" 
+                                Text="Delete"/>
         </Columns>
         </asp:GridView>
 
