@@ -67,6 +67,15 @@ namespace WidgetGoods
                         lblSupplierID.Text = supplierDataTable.Rows[0]["SupplierID"].ToString();
                         txtCompanyName.Text = supplierDataTable.Rows[0]["CompanyName"].ToString();
                         txtContactName.Text = supplierDataTable.Rows[0]["ContactName"].ToString();
+                        txtContactTitle.Text = supplierDataTable.Rows[0]["ContactTitle"].ToString();
+                        txtAddress.Text = supplierDataTable.Rows[0]["Address"].ToString();
+                        txtCity.Text = supplierDataTable.Rows[0]["City"].ToString();
+                        txtRegion.Text = supplierDataTable.Rows[0]["Region"].ToString();
+                        txtPostalCode.Text = supplierDataTable.Rows[0]["PostalCode"].ToString();
+                        txtCountry.Text = supplierDataTable.Rows[0]["Country"].ToString();
+                        txtPhone.Text = supplierDataTable.Rows[0]["Phone"].ToString();
+                        txtFax.Text = supplierDataTable.Rows[0]["Fax"].ToString();
+                        txtHomePage.Text = supplierDataTable.Rows[0]["HomePage"].ToString();
                     }
                     catch (Exception Ex)
                     {
@@ -94,10 +103,20 @@ namespace WidgetGoods
                     con.Open();
 
                     //create an update command and add the parameter values
-                    string sql = "UPDATE Suppliers SET CompanyName = @CompanyName, ContactName = @CompanyName WHERE SupplierID = @SupplierID";
+                    string sql = "UPDATE Suppliers SET CompanyName = @CompanyName, ContactName = @ContactName, ContactTitle = @ContactTitle, Address = @Address, City = @City, Region = @Region, PostalCode = @PostalCode, Country = @Country, Phone = @PhoneNumber, Fax = @FaxNumber, HomePage = @HomePage  WHERE SupplierID = @SupplierID";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
                     cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
+                    cmd.Parameters.AddWithValue("@ContactTitle", txtContactTitle.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@City", txtCity.Text);
+                    cmd.Parameters.AddWithValue("@Region", txtRegion.Text);
+                    cmd.Parameters.AddWithValue("@PostalCode", txtPostalCode.Text);
+                    cmd.Parameters.AddWithValue("@Country", txtCountry.Text);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", txtPhone.Text);
+                    cmd.Parameters.AddWithValue("@FaxNumber", txtFax.Text);
+                    cmd.Parameters.AddWithValue("@HomePage", txtHomePage.Text);
+                    
                     cmd.Parameters.AddWithValue("@SupplierID", lblSupplierID.Text);
 
                     cmd.ExecuteNonQuery();
@@ -125,10 +144,19 @@ namespace WidgetGoods
                     con.Open();
                     
                     //create an update command and add the parameter values
-                    string sql = "INSERT INTO Suppliers (CompanyName, ContactName) VALUES (@CompanyName, @ContactName)";
+                    string sql = "INSERT INTO Suppliers VALUES (@CompanyName, @ContactName, @ContactTitle, @Address, @City, @Region, @PostalCode, @Country, @PhoneNumber, @FaxNumber, @HomePage)";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@CompanyName", txtCompanyName.Text);
                     cmd.Parameters.AddWithValue("@ContactName", txtContactName.Text);
+                    cmd.Parameters.AddWithValue("@ContactTitle", txtContactTitle.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@City", txtCity.Text);
+                    cmd.Parameters.AddWithValue("@Region", txtRegion.Text);
+                    cmd.Parameters.AddWithValue("@PostalCode", txtPostalCode.Text);
+                    cmd.Parameters.AddWithValue("@Country", txtCountry.Text);
+                    cmd.Parameters.AddWithValue("@PhoneNumber", txtPhone.Text);
+                    cmd.Parameters.AddWithValue("@FaxNumber", txtFax.Text);
+                    cmd.Parameters.AddWithValue("@HomePage", txtHomePage.Text);
 
                     cmd.ExecuteNonQuery();
                 }
